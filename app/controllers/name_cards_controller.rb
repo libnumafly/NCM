@@ -21,9 +21,9 @@ class NameCardsController < ApplicationController
   def show
     @name_card = NameCard.find(params[:id])
     @is_received = received?(params[:id])
-    width = 160
-    height = 160
-    tmp = RQRCode::QRCode.new(url_for(controller: :name_cards, action: :show, id: @name_card.id, password: @name_card.password), size: 8, level: :m)
+    width = 240
+    height = 240
+    tmp = RQRCode::QRCode.new(url_for(controller: :name_cards, action: :show, id: @name_card.id, password: @name_card.password), level: :h)
     image = ChunkyPNG::RMagick.export(tmp.as_png.resize(width, height))
     @qr = ChunkyPNG::RMagick.import(image).to_data_url
   end
@@ -77,12 +77,13 @@ class NameCardsController < ApplicationController
 
   def correct_user?
     name_card = NameCard.find(params[:id])
-    if name_card.user_id != current_user.id
-      redirect_to(root_url)
-      flash[:danger] = 'あなたには権限がありません。'
+    if user_signed_in? && (name_card.user_id == current_user.id)
+      true
+    else
+      redirect_back fallback_location: root_path
+      flash[:danger] = 'ログインされていないか、権限がありません。'
       false
     end
-    true
   end
 
   def received?(id)

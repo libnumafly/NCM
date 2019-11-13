@@ -20,7 +20,7 @@ javascript:
       $('.search-result__hit-num').empty();
       if (searchText != '') {
         var f = function (name) {
-          var Query = ['PREFIX schema:<http://schema.org/>PREFIX imas:<https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#>SELECT (sample(?n) as ?name)WHERE { ?s imas:nameKana|schema:alternateName|imas:alternateNameKana|schema:name ?o; ?p imas:Idol. FILTER(regex(str(?o), "', '")). ?s schema:name|schema:alternateName ?n.}group by(?s)order by(?o)'];
+          var Query = ['PREFIX schema:<http://schema.org/>PREFIX imas:<https://sparql.crssnky.xyz/imasrdf/URIs/imas-schema.ttl#>SELECT (sample(?n) as ?name)WHERE { ?s imas:nameKana|schema:alternateName|imas:alternateNameKana|schema:name ?o; ?p imas:Idol. FILTER(regex(str(?o), "', '")&&lang(?n)="ja"). ?s schema:name|schema:alternateName ?n.}group by(?s)order by(?o)'];
           var url = 'https://sparql.crssnky.xyz/spql/imas/query?query=' + encodeURIComponent(Query[0] + name + Query[1]);
           var req = new XMLHttpRequest();
           req.onreadystatechange = function () {
@@ -31,16 +31,16 @@ javascript:
               $('#search-result__list').empty();
               $('.search-result__hit-num').empty();
               for (var i = 0; i < searchResult.length; i++) {
-                $('<span>').attr({
+                $('<a>').attr({
                   'class': 'btn btn-sm btn-info namecard-new-btn add_fields',
                   'role': 'button',
                   'data-association-insertion-node': '#detail-association-insertion-point',
                   'data-association': 'idol',
                   'data-associations': 'idols',
-                  'data-association-insertion-template': "<tr class='nested-fields'><td><div class='field'>" +
-                  `<input type='hidden' name='name_card[idols_attributes][new_idols][name]' id='name_card_idols_attributes_new_idols_name' value='${searchResult[i]}'>${searchResult[i]}</input></div></td>` +
+                  'data-association-insertion-template': "<div class='nested-fields namecard__inner-idol'><span class='field btn btn-sm btn-info namecard__idol-btn'>" +
+                  `<input type='hidden' name='name_card[idols_attributes][new_idols][name]' id='name_card_idols_attributes_new_idols_name' value='${searchResult[i]}'>${searchResult[i]}</input></span>` +
                   "<td><input type='hidden' name='name_card[idols_attributes][new_idols][_destroy]' id='name_card_idols_attributes_new_idols__destroy' value='false'/>" +
-                  "<a class='btn btn-sm btn-danger remove_fields dynamic' role='button' href='#'>削除</a></td></tr>",
+                  "<a class='btn btn-sm btn-danger namecard__idol-btn remove_fields dynamic' role='button' href='#'>削除</a></td></div>",
                   'href': '#',
                 }).text(searchResult[i]).appendTo('#search-result__list');
               }

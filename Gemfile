@@ -8,7 +8,8 @@ end
 gem 'rails_12factor', group: :production
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 5.2.4'
+gem 'bootsnap', require: false
 gem 'devise'
 gem 'mastodon-api', require: 'mastodon'
 gem 'omniauth-mastodon', github: 'ezaki3/omniauth-mastodon', branch: 'change-uid'
@@ -20,7 +21,7 @@ gem 'rails-i18n'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 3.7'
+gem 'puma', '~> 3.12'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -42,6 +43,7 @@ gem 'bcrypt', '~> 3.1.7'
 # for image uploader with AWS S3
 gem 'carrierwave'
 gem 'fog'
+gem 'fog-aliyun', '0.3.8'
 gem 'rmagick'
 gem 'dotenv-rails'
 gem 'rqrcode_png'
